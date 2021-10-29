@@ -3,7 +3,7 @@ import {filterType} from "./App";
 import Button from "./components/Button";
 
 export type TaskType = {
-    id: number
+    id: string
     title: string
     isDone: boolean
 }
@@ -11,7 +11,7 @@ export type TaskType = {
 type PropsType = {
     title: string
     tasks: Array<TaskType>
-    removeTask: (id: number) => void
+    removeTask: (TaskId:string) => void
     changeFilter: (value: filterType) => void
     addTask: (newTitle: string) => void
 }
@@ -36,9 +36,7 @@ export function Todolist(props: PropsType) {
         }
     }
 
-    const onClickHandlerChengeFilter = (value: filterType)=>{
-        props.changeFilter(value)
-    }
+
 
     return <div>
         <h3>{props.title}</h3>
@@ -48,12 +46,12 @@ export function Todolist(props: PropsType) {
         </div>
         <ul>
             {props.tasks.map((t) => {
-                const onClickHandlerRemoveTask = () => {
-                    props.removeTask(t.id)
+                const onClickHandlerRemoveTask = (TaskId:string) => {
+                    props.removeTask(TaskId)
                 }
                 return (
                     <li>
-                        <button onClick={onClickHandlerRemoveTask}>х</button>
+                        <Button callBack={()=>onClickHandlerRemoveTask(t.id)} name={'X'}/>
                         <input type="checkbox"
                                checked={t.isDone}/>
                         <span>{t.title}</span>
@@ -62,10 +60,9 @@ export function Todolist(props: PropsType) {
             })}
         </ul>
         <div>
-            <button onClick={() => onClickHandlerChengeFilter('All')}>All</button>
-            <button onClick={() => onClickHandlerChengeFilter('Active')}>Active</button>
-            <button onClick={() => onClickHandlerChengeFilter('Completed')}>Completed</button>
-            <Button callBack={() => callBackHandlerFilters('All')}/>
+            <Button callBack={() => callBackHandlerFilters('All')} name={'All'}/>
+            <Button callBack={() => callBackHandlerFilters('Active')}name={'Active'}/>
+            <Button callBack={() => callBackHandlerFilters('Completed')}name={'Completed'}/>
         </div>
     </div>
 }
